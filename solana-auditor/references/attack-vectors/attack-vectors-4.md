@@ -287,30 +287,48 @@ require!(
 
 ---
 
-## V87 — Vault Share Inflation — First Depositor Attack
+## V87 — Token-2022 CPIGuard and DefaultAccountState DoS
 
-**Detect:** Vault with share-based accounting where first deposit has no minimum. `shares = deposit * total_shares / total_assets` where both start at 0. No virtual offset or dead shares.
+**Detect:** Protocol performing CPI token transfers without checking for CPIGuard extension on source account. Protocol creating/receiving token accounts without checking mint's `DefaultAccountState` extension (frozen-by-default).
 
 **Vulnerable:**
 ```rust
-let shares = if pool.total_shares == 0 {
-    deposit_amount  // first depositor: 1:1
-} else {
-    deposit_amount.checked_mul(pool.total_shares)?.checked_div(pool.total_assets)?
-};
-// Attack: deposit 1 (1 share) → donate 1e9 directly to vault
-// Victim deposits 1e9: shares = 1e9 * 1 / (1e9+1) = 0 shares!
+// CPIGuard: CPI transfer silently rejected
+pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
+    // If user's token account has CPIGuard enabled, this CPI transfer FAILS
+    token_interface::transfer_checked(cpi_ctx, amount, decimals)?;
+    // User's funds permanently stuck — can't withdraw via CPI
+}
+
+// DefaultAccountState: transfers to new ATAs fail
+pub fn distribute(ctx: Context<Distribute>, amount: u64) -> Result<()> {
+    // If mint has DefaultAccountState::Frozen, newly created ATAs start frozen
+    token_interface::transfer_checked(cpi_ctx, amount, decimals)?;
+    // Transfer to frozen account fails — rewards/payouts stuck
+}
 ```
 
-**Exploit:** First depositor mints 1 share, donates large amount directly to vault to inflate share price. Subsequent depositors get 0 shares due to integer truncation. First depositor redeems for all deposits. (See also V57 in file 3.)
+**Exploit:** CPIGuard: User enables CPIGuard on their token account, then deposits into protocol. Protocol can never CPI-transfer tokens back — permanent lock. DefaultAccountState: Mint creates frozen accounts by default. Protocol creates ATA for user, attempts transfer — fails because destination is frozen.
 
 **Secure:**
 ```rust
-const VIRTUAL_OFFSET: u64 = 1_000_000;  // virtual shares/assets
-let shares = deposit_amount
-    .checked_mul(pool.total_shares + VIRTUAL_OFFSET)?
-    .checked_div(pool.total_assets + VIRTUAL_OFFSET)?;
-require!(shares > 0, ZeroSharesMinted);
+// Check CPIGuard before CPI operations
+let account_data = ctx.accounts.source.to_account_info().try_borrow_data()?;
+let state = StateWithExtensions::<Token2022Account>::unpack(&account_data)?;
+if let Ok(cpi_guard) = state.get_extension::<CpiGuard>() {
+    if bool::from(cpi_guard.lock_cpi) {
+        return err!(ErrorCode::CpiGuardEnabled);  // reject or use alternative flow
+    }
+}
+
+// Check DefaultAccountState on mint
+let mint_data = ctx.accounts.mint.to_account_info().try_borrow_data()?;
+let mint_state = StateWithExtensions::<Mint>::unpack(&mint_data)?;
+if let Ok(default_state) = mint_state.get_extension::<DefaultAccountState>() {
+    if u8::from(default_state.state) == AccountState::Frozen as u8 {
+        return err!(ErrorCode::MintCreatesFrozenAccounts);
+    }
+}
 ```
 
 ---

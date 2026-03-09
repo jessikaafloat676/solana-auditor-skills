@@ -53,21 +53,26 @@ if vault_account.owner != program_id { return Err(ProgramError::IncorrectProgram
 
 ## V3 — Type Cosplay — Missing Discriminator
 
-**Detect:** In native programs: `BorshDeserialize` structs without an 8-byte discriminant field at offset 0. `try_from_slice()` without discriminator check. In Anchor: `AccountLoader` without discriminator validation.
+**Detect:** In native programs: `BorshDeserialize` structs without an 8-byte discriminant field at offset 0. `try_from_slice()` without discriminator check. In Anchor: `AccountLoader<'info, T>` (zero-copy accounts) — does NOT auto-check discriminators unlike `Account<'info, T>`.
 
 **Vulnerable:**
 ```rust
 #[derive(BorshDeserialize)]
 pub struct User { authority: Pubkey, balance: u64 }
 // No discriminant field — AdminConfig has same layout, can be substituted
+
+// Anchor zero-copy: AccountLoader also skips discriminator check!
+#[account(mut)]
+pub user: AccountLoader<'info, User>,  // type cosplay possible
 ```
 
-**Exploit:** Attacker passes `AdminConfig` account where `User` is expected. Data layouts overlap — attacker's pubkey becomes the "authority."
+**Exploit:** Attacker passes `AdminConfig` account where `User` is expected. Data layouts overlap — attacker's pubkey becomes the "authority." With `AccountLoader`, zero-copy deserialization bypasses the discriminator check that `Account<'info, T>` performs automatically.
 
 **Secure:**
 ```rust
 pub struct User { discriminant: [u8; 8], authority: Pubkey, balance: u64 }
 // Anchor: #[account] macro auto-generates discriminator
+// For AccountLoader: use Account<'info, T> when possible, or add manual discriminator check
 ```
 
 ---
